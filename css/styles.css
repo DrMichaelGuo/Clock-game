@@ -1,0 +1,437 @@
+:root {
+    --primary-color: #ff8a00;
+    --secondary-color: #4caf50;
+    --accent-color: #2196f3;
+    --background-color: #f9f9f9;
+    --text-color: #333;
+    --success-color: #4CAF50;
+    --error-color: #f44336;
+    --clock-face-color: #fff;
+    --clock-border-color: #6a1b9a;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Comic Neue', cursive;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 8px dashed var(--secondary-color);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.nav-button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-family: 'Comic Neue', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.nav-button.active {
+    background-color: var(--accent-color);
+    transform: scale(1.05);
+}
+
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section {
+    display: none;
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    margin: 20px 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.section.active {
+    display: block;
+}
+
+h2 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h3 {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    margin: 15px 0;
+}
+
+/* Clock styles */
+.clock-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.clock {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background-color: var(--clock-face-color);
+    border: 10px solid var(--clock-border-color);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.clock:hover {
+    transform: scale(1.03);
+}
+
+.number {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.n1 { transform: rotate(30deg); }
+.n2 { transform: rotate(60deg); }
+.n3 { transform: rotate(90deg); }
+.n4 { transform: rotate(120deg); }
+.n5 { transform: rotate(150deg); }
+.n6 { transform: rotate(180deg); }
+.n7 { transform: rotate(210deg); }
+.n8 { transform: rotate(240deg); }
+.n9 { transform: rotate(270deg); }
+.n10 { transform: rotate(300deg); }
+.n11 { transform: rotate(330deg); }
+.n12 { transform: rotate(0deg); }
+
+.number span {
+    display: block;
+    transform: rotate(-30deg);
+}
+
+.hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.hour {
+    width: 8px;
+    height: 30%;
+    background-color: #333;
+    transform: translate(-50%, 0) rotate(0deg);
+}
+
+.minute {
+    width: 4px;
+    height: 40%;
+    background-color: #555;
+    transform: translate(-50%, 0) rotate(0deg);
+}
+
+.center-point {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #333;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 15;
+}
+
+/* Learn section styles */
+.learn-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.learn-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.clock-demo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+}
+
+.clock-explanation {
+    max-width: 400px;
+}
+
+.clock-explanation p {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.clock-explanation button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.clock-explanation button:hover {
+    background-color: #0b7dda;
+    transform: scale(1.05);
+}
+
+.special-times {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.time-example {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 200px;
+}
+
+.time-example img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-color);
+}
+
+/* Practice section styles */
+.practice-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.practice-mode {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.draggable {
+    cursor: grab;
+}
+
+.draggable:active {
+    cursor: grabbing;
+}
+
+.mc-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.mc-option {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mc-option:hover {
+    background-color: #3d8b40;
+    transform: scale(1.05);
+}
+
+button#check-time, button#quiz-submit {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1.1rem;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button#check-time:hover, button#quiz-submit:hover {
+    background-color: #e67e00;
+    transform: scale(1.05);
+}
+
+.feedback {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: none;
+}
+
+.feedback.success {
+    display: block;
+    background-color: rgba(76, 175, 80, 0.3);
+    color: var(--success-color);
+}
+
+.feedback.error {
+    display: block;
+    background-color: rgba(244, 67, 54, 0.3);
+    color: var(--error-color);
+}
+
+/* Quiz section styles */
+#quiz-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#quiz-progress {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+#quiz-question {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#quiz-results {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#stars-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 2rem;
+    gap: 5px;
+}
+
+#restart-quiz {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1.1rem;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#restart-quiz:hover {
+    background-color: #0b7dda;
+    transform: scale(1.05);
+}
+
+#final-message {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 15px 0;
+    color: var(--primary-color);
+}
+
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 30px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .clock {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .number {
+        font-size: 1.5rem;
+    }
+    
+    .learn-content, .practice-content {
+        flex-direction: column;
+    }
+    
+    .clock-demo {
+        flex-direction: column;
+    }
+    
+    .nav-button {
+        padding: 8px 15px;
+        font-size: 1rem;
+    }
+}

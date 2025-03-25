@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock Image Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .clock-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .clock-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .clock {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: white;
+            border: 10px solid #6a1b9a;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .number {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 10px;
+            z-index: 10;
+        }
+        
+        .hour {
+            width: 8px;
+            height: 30%;
+            background-color: #333;
+        }
+        
+        .minute {
+            width: 4px;
+            height: 40%;
+            background-color: #555;
+        }
+        
+        .center-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #333;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+        }
+        
+        .clock-label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background-color: #388e3c;
+        }
+        
+        label {
+            margin-right: 10px;
+        }
+        
+        input, select {
+            padding: 5px;
+            margin-right: 15px;
+        }
+        
+        .instructions {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffd600;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Clock Image Generator</h1>
+    
+    <div class="instructions">
+        <h3>How to use:</h3>
+        <p>1. Use the controls below to set up the clock style and times</p>
+        <p>2. Click "Generate Clocks" to create the four example clocks needed for your game</p>
+        <p>3. Take screenshots of each clock or use the "Save as Image" button under each clock</p>
+        <p>4. Save images as oclock.png, half-past.png, quarter-past.png, and quarter-to.png</p>
+    </div>
+    
+    <div class="controls">
+        <h3>Controls</h3>
+        <div>
+            <label for="clockColor">Clock Border Color:</label>
+            <input type="color" id="clockColor" value="#6a1b9a">
+            
+            <label for="faceColor">Face Color:</label>
+            <input type="color" id="faceColor" value="#ffffff">
+            
+            <label for="hourHandColor">Hour Hand Color:</label>
+            <input type="color" id="hourHandColor" value="#333333">
+            
+            <label for="minuteHandColor">Minute Hand Color:</label>
+            <input type="color" id="minuteHandColor" value="#555555">
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="numberColor">Number Color:</label>
+            <input type="color" id="numberColor" value="#333333">
+            
+            <label for="clockStyle">Clock Style:</label>
+            <select id="clockStyle">
+                <option value="basic">Basic</option>
+                <option value="colorful">Colorful</option>
+                <option value="cartoon">Cartoon</option>
+            </select>
+        </div>
+        <div style="margin-top: 15px;">
+            <button id="generateButton">Generate Clocks</button>
+            <button id="customClockButton">Create Custom Clock</button>
+        </div>
+    </div>
+    
+    <h2>Required Clock Images</h2>
+    <div class="clock-container" id="requiredClocks"></div>
+    
+    <div id="customClockSection" style="display: none; margin-top: 30px;">
+        <h2>Custom Clock</h2>
+        <div style="margin-bottom: 15px;">
+            <label for="customHour">Hour (1-12):</label>
+            <input type="number" id="customHour" min="1" max="12" value="3">
+            
+            <label for="customMinute">Minute (0-59):</label>
+            <input type="number" id="customMinute" min="0" max="59" value="0">
+            
+            <button id="setCustomTimeButton">Set Time</button>
+        </div>
+        <div class="clock-wrapper">
+            <div class="clock" id="customClock">
+                <!-- Numbers will be added dynamically -->
+                <div class="hand hour" id="customHourHand"></div>
+                <div class="hand minute" id="customMinuteHand"></div>
+                <div class="center-point"></div>
+            </div>
+            <div class="clock-label" id="customClockLabel">3:00</div>
+            <button id="saveCustomButton" style="margin-top: 10px;">Save as Image</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const requiredClocks = document.getElementById('requiredClocks');
+            const generateButton = document.getElementById('generateButton');
+            const customClockButton = document.getElementById('customClockButton');
+            const customClockSection = document.getElementById('customClockSection');
+            const setCustomTimeButton = document.getElementById('setCustomTimeButton');
+            const customHour = document.getElementById('customHour');
+            const customMinute = document.getElementById('customMinute');
+            const customHourHand = document.getElementById('customHourHand');
+            const customMinuteHand = document.getElementById('customMinuteHand');
+            const customClockLabel = document.getElementById('customClockLabel');
+            const customClock = document.getElementById('customClock');
+            
+            // Clock style controls
+            const clockColor = document.getElementById('clockColor');
+            const faceColor = document.getElementById('faceColor');
+            const hourHandColor = document.getElementById('hourHandColor');
+            const minuteHandColor = document.getElementById('minuteHandColor');
+            const numberColor = document.getElementById('numberColor');
+            const clockStyle = document.getElementById('clockStyle');
+            
+            // Create required clocks (o'clock, half past, quarter past, quarter to)
+            const requiredClockData = [
+                { name: "O'clock", hour: 3, minute: 0, filename: "oclock.png" },
+                { name: "Half Past", hour: 3, minute: 30, filename: "half-past.png" },
+                { name: "Quarter Past", hour: 3, minute: 15, filename: "quarter-past.png" },
+                { name: "Quarter To", hour: 2, minute: 45, filename: "quarter-to.png" }
+            ];
+            
+            // Generate the required clocks
+            generateButton.addEventListener('click', () => {
+                requiredClocks.innerHTML = '';
+                applyClockStyles();
+                
+                requiredClockData.forEach(data => {
+                    const clockWrapper = document.createElement('div');
+                    clockWrapper.className = 'clock-wrapper';
+                    
+                    const clock = document.createElement('div');
+                    clock.className = 'clock';
+                    clock.style.borderColor = clockColor.value;
+                    clock.style.backgroundColor = faceColor.value;
+                    
+                    // Add clock numbers
+                    for (let i = 1; i <= 12; i++) {
+                        const number = document.createElement('div');
+                        number.className = 'number';
+                        number.textContent = i;
+                        number.style.color = numberColor.value;
+                        
+                        // Position number
+                        const angle = (i * 30) - 30; // 30 degrees per hour, offset by -30 to start at 12
+                        const radians = angle * (Math.PI / 180);
+                        const numRadius = 80;  // Slightly less than clock radius
+                        const x = numRadius * Math.sin(radians);
+                        const y = -numRadius * Math.cos(radians);
+                        
+                        number.style.position = 'absolute';
+                        number.style.left = `calc(50% + ${x}px - 0.5em)`;
+                        number.style.top = `calc(50% + ${y}px - 0.5em)`;
+                        
+                        clock.appendChild(number);
+                    }
+                    
+                    // Hour hand
+                    const hourHand = document.createElement('div');
+                    hourHand.className = 'hand hour';
+                    hourHand.style.backgroundColor = hourHandColor.value;
+                    
+                    // Calculate hour angle (30 degrees per hour plus minute contribution)
+                    const hourAngle = ((data.hour % 12) * 30) + (data.minute / 2);
+                    hourHand.style.transform = `translate(-50%, 0) rotate(${hourAngle}deg)`;
+                    
+                    // Minute hand
+                    const minuteHand = document.createElement('div');
+                    minuteHand.className = 'hand minute';
+                    minuteHand.style.backgroundColor = minuteHandColor.value;
+                    
+                    // Calculate minute angle (6 degrees per minute)
+                    const minuteAngle = data.minute * 6;
+                    minuteHand.style.transform = `translate(-50%, 0) rotate(${minuteAngle}deg)`;
+                    
+                    // Center point
+                    const centerPoint = document.createElement('div');
+                    centerPoint.className = 'center-point';
+                    
+                    // Append hands and center point
+                    clock.appendChild(hourHand);
+                    clock.appendChild(minuteHand);
+                    clock.appendChild(centerPoint);
+                    
+                    // Apply selected style
+                    applyClockStyle(clock, clockStyle.value);
+                    
+                    // Clock label
+                    const label = document.createElement('div');
+                    label.className = 'clock-label';
+                    const displayMinute = data.minute < 10 ? '0' + data.minute : data.minute;
+                    label.textContent = `${data.name} (${data.hour}:${displayMinute})`;
+                    
+                    // Save button
+                    const saveButton = document.createElement('button');
+                    saveButton.textContent = 'Save as Image';
+                    saveButton.style.marginTop = '10px';
+                    saveButton.addEventListener('click', () => {
+                        saveAsImage(clock, data.filename);
+                    });
+                    
+                    // Append everything
+                    clockWrapper.appendChild(clock);
+                    clockWrapper.appendChild(label);
+                    clockWrapper.appendChild(saveButton);
+                    requiredClocks.appendChild(clockWrapper);
+                });
+            });
+            
+            // Toggle custom clock section
+            customClockButton.addEventListener('click', () => {
+                customClockSection.style.display = customClockSection.style.display === 'none' ? 'block' : 'none';
+                
+                if (customClockSection.style.display === 'block') {
+                    applyClockStyles();
+                    setupCustomClock();
+                }
+            });
+            
+            // Set up custom clock
+            function setupCustomClock() {
+                // Clear custom clock
+                while (customClock.firstChild) {
+                    if (!customClock.firstChild.classList || 
+                        (!customClock.firstChild.classList.contains('hour') && 
+                         !customClock.firstChild.classList.contains('minute') && 
+                         !customClock.firstChild.classList.contains('center-point'))) {
+                        customClock.removeChild(customClock.firstChild);
+                    }
+                }
+                
+                customClock.style.borderColor = clockColor.value;
+                customClock.style.backgroundColor = faceColor.value;
+                
+                // Add clock numbers
+                for (let i = 1; i <= 12; i++) {
+                    const number = document.createElement('div');
+                    number.className = 'number';
+                    number.textContent = i;
+                    number.style.color = numberColor.value;
+                    
+                    // Position number
+                    const angle = (i * 30) - 30; // 30 degrees per hour, offset by -30
+                    const radians = angle * (Math.PI / 180);
+                    const numRadius = 80;  // Slightly less than clock radius
+                    const x = numRadius * Math.sin(radians);
+                    const y = -numRadius * Math.cos(radians);
+                    
+                    number.style.position = 'absolute';
+                    number.style.left = `calc(50% + ${x}px - 0.5em)`;
+                    number.style.top = `calc(50% + ${y}px - 0.5em)`;
+                    
+                    customClock.appendChild(number);
+                }
+                
+                // Update hands
+                customHourHand.style.backgroundColor = hourHandColor.value;
+                customMinuteHand.style.backgroundColor = minuteHandColor.value;
+                
+                // Apply selected style
+                applyClockStyle(customClock, clockStyle.value);
+                
+                // Set initial time
+                updateCustomClock();
+                
+                // Save button
+                document.getElementById('saveCustomButton').addEventListener('click', () => {
+                    const h = parseInt(customHour.value);
+                    const m = parseInt(customMinute.value);
+                    const displayMinute = m < 10 ? '0' + m : m;
+                    saveAsImage(customClock, `clock-${h}-${displayMinute}.png`);
+                });
+            }
+            
+            // Update custom clock hands
+            setCustomTimeButton.addEventListener('click', updateCustomClock);
+            
+            function updateCustomClock() {
+                const hour = parseInt(customHour.value);
+                const minute = parseInt(customMinute.value);
+                
+                // Calculate hour angle (30 degrees per hour plus minute contribution)
+                const hourAngle = ((hour % 12) * 30) + (minute / 2);
+                // Calculate minute angle (6 degrees per minute)
+                const minuteAngle = minute * 6;
+                
+                customHourHand.style.transform = `translate(-50%, 0) rotate(${hourAngle}deg)`;
+                customMinuteHand.style.transform = `translate(-50%, 0) rotate(${minuteAngle}deg)`;
+                
+                const displayMinute = minute < 10 ? '0' + minute : minute;
+                customClockLabel.textContent = `${hour}:${displayMinute}`;
+            }
+            
+            // Apply styles to all clocks
+            function applyClockStyles() {
+                document.querySelectorAll('.clock').forEach(clock => {
+                    clock.style.borderColor = clockColor.value;
+                    clock.style.backgroundColor = faceColor.value;
+                    
+                    clock.querySelectorAll('.hour').forEach(hand => {
+                        hand.style.backgroundColor = hourHandColor.value;
+                    });
+                    
+                    clock.querySelectorAll('.minute').forEach(hand => {
+                        hand.style.backgroundColor = minuteHandColor.value;
+                    });
+                    
+                    clock.querySelectorAll('.number').forEach(number => {
+                        number.style.color = numberColor.value;
+                    });
+                });
+            }
+            
+            // Apply style based on selection
+            function applyClockStyle(clock, style) {
+                switch(style) {
+                    case 'colorful':
+                        clock.style.borderWidth = '12px';
+                        clock.style.borderImage = 'linear-gradient(45deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee) 1';
+                        clock.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.2)';
+                        break;
+                    case 'cartoon':
+                        clock.style.borderWidth = '15px';
+                        clock.style.borderColor = '#ff6b6b';
+                        clock.style.boxShadow = '0 0 0 5px #4ecdc4, 0 0 0 10px #ffe66d, 10px 10px 20px rgba(0, 0, 0, 0.3)';
+                        // Make numbers more cartoony
+                        clock.querySelectorAll('.number').forEach(number => {
+                            number.style.fontFamily = 'Comic Sans MS, cursive';
+                            number.style.fontSize = '2rem';
+                            number.style.fontWeight = 'bold';
+                            number.style.color = '#ff6b6b';
+                        });
+                        break;
+                    default: // basic
+                        clock.style.borderWidth = '10px';
+                        clock.style.borderImage = 'none';
+                        clock.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(0, 0, 0, 0.1)';
+                }
+            }
+            
+            // Save clock as image
+            function saveAsImage(clock, filename) {
+                // Create a clone of the clock to avoid affecting the displayed clock
+                const clockClone = clock.cloneNode(true);
+                
+                // Style the clone for rendering
+                clockClone.style.position = 'absolute';
+                clockClone.style.left = '-9999px';
+                document.body.appendChild(clockClone);
+                
+                // Use html2canvas library to convert to image
+                html2canvas(clockClone).then(canvas => {
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.download = filename;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    // Clean up
+                    document.body.removeChild(clockClone);
+                }).catch(error => {
+                    alert('Error generating image: ' + error);
+                    console.error('Error generating image:', error);
+                    document.body.removeChild(clockClone);
+                });
+            }
+            
+            // Load the html2canvas library dynamically
+            function loadHtml2Canvas() {
+                return new Promise((resolve, reject) => {
+                    if (window.html2canvas) {
+                        resolve();
+                        return;
+                    }
+                    
+                    const script = document.createElement('script');
+                    script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.head.appendChild(script);
+                });
+            }
+            
+            // Load html2canvas when the page loads
+            loadHtml2Canvas().catch(error => {
+                console.error('Failed to load html2canvas:', error);
+                alert('Unable to load required libraries for image saving. The "Save as Image" feature might not work.');
+            });
+        });
+    </script>
+</body>
+</html>

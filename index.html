@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Adventure - Learn to Tell Time!</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>⏰ Time Adventure ⏰</h1>
+        <nav>
+            <button class="nav-button active" data-section="learn">Learn</button>
+            <button class="nav-button" data-section="practice">Practice</button>
+            <button class="nav-button" data-section="quiz">Quiz</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Learn Section -->
+        <section id="learn" class="section active">
+            <h2>Let's Learn About Clocks!</h2>
+            <div class="learn-content">
+                <div class="learn-card">
+                    <h3>The Clock Face</h3>
+                    <div class="clock-demo">
+                        <div class="clock-container">
+                            <div class="clock learn-clock">
+                                <div class="number n1">1</div>
+                                <div class="number n2">2</div>
+                                <div class="number n3">3</div>
+                                <div class="number n4">4</div>
+                                <div class="number n5">5</div>
+                                <div class="number n6">6</div>
+                                <div class="number n7">7</div>
+                                <div class="number n8">8</div>
+                                <div class="number n9">9</div>
+                                <div class="number n10">10</div>
+                                <div class="number n11">11</div>
+                                <div class="number n12">12</div>
+                                <div class="hand hour"></div>
+                                <div class="hand minute"></div>
+                                <div class="center-point"></div>
+                            </div>
+                        </div>
+                        <div class="clock-explanation">
+                            <p><strong>Hour Hand:</strong> The short hand shows the hour.</p>
+                            <p><strong>Minute Hand:</strong> The long hand shows the minutes.</p>
+                            <button id="demo-hour">Move Hour Hand</button>
+                            <button id="demo-minute">Move Minute Hand</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="learn-card">
+                    <h3>Special Times</h3>
+                    <div class="special-times">
+                        <div class="time-example">
+                            <img src="images/oclock.png" alt="O'clock example" onerror="this.src='images/placeholder.png';">
+                            <p><strong>O'clock</strong> - When the minute hand points to 12</p>
+                        </div>
+                        <div class="time-example">
+                            <img src="images/half-past.png" alt="Half past example" onerror="this.src='images/placeholder.png';">
+                            <p><strong>Half past</strong> - When the minute hand points to 6</p>
+                        </div>
+                        <div class="time-example">
+                            <img src="images/quarter-past.png" alt="Quarter past example" onerror="this.src='images/placeholder.png';">
+                            <p><strong>Quarter past</strong> - When the minute hand points to 3</p>
+                        </div>
+                        <div class="time-example">
+                            <img src="images/quarter-to.png" alt="Quarter to example" onerror="this.src='images/placeholder.png';">
+                            <p><strong>Quarter to</strong> - When the minute hand points to 9</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section id="practice" class="section">
+            <h2>Let's Practice!</h2>
+            <div class="practice-content">
+                <div class="practice-mode" id="drag-drop">
+                    <h3>Set the Clock</h3>
+                    <p>Drag the hands to show the time: <span id="target-time">3:30</span></p>
+                    <div class="clock-container">
+                        <div class="clock practice-clock">
+                            <div class="number n1">1</div>
+                            <div class="number n2">2</div>
+                            <div class="number n3">3</div>
+                            <div class="number n4">4</div>
+                            <div class="number n5">5</div>
+                            <div class="number n6">6</div>
+                            <div class="number n7">7</div>
+                            <div class="number n8">8</div>
+                            <div class="number n9">9</div>
+                            <div class="number n10">10</div>
+                            <div class="number n11">11</div>
+                            <div class="number n12">12</div>
+                            <div class="hand hour draggable" id="practice-hour"></div>
+                            <div class="hand minute draggable" id="practice-minute"></div>
+                            <div class="center-point"></div>
+                        </div>
+                    </div>
+                    <button id="check-time">Check My Answer</button>
+                    <div id="practice-feedback" class="feedback"></div>
+                </div>
+
+                <div class="practice-mode" id="multiple-choice">
+                    <h3>What Time Is It?</h3>
+                    <div class="clock-container">
+                        <div class="clock mc-clock">
+                            <div class="number n1">1</div>
+                            <div class="number n2">2</div>
+                            <div class="number n3">3</div>
+                            <div class="number n4">4</div>
+                            <div class="number n5">5</div>
+                            <div class="number n6">6</div>
+                            <div class="number n7">7</div>
+                            <div class="number n8">8</div>
+                            <div class="number n9">9</div>
+                            <div class="number n10">10</div>
+                            <div class="number n11">11</div>
+                            <div class="number n12">12</div>
+                            <div class="hand hour"></div>
+                            <div class="hand minute"></div>
+                            <div class="center-point"></div>
+                        </div>
+                    </div>
+                    <div class="mc-options">
+                        <button class="mc-option">2:15</button>
+                        <button class="mc-option">4:30</button>
+                        <button class="mc-option">7:45</button>
+                        <button class="mc-option">10:00</button>
+                    </div>
+                    <div id="mc-feedback" class="feedback"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz" class="section">
+            <h2>Time Quiz Challenge</h2>
+            <div id="quiz-container">
+                <div id="quiz-progress">Question <span id="current-question">1</span> of <span id="total-questions">5</span></div>
+                <div id="quiz-question"></div>
+                <div class="clock-container">
+                    <div class="clock quiz-clock">
+                        <div class="number n1">1</div>
+                        <div class="number n2">2</div>
+                        <div class="number n3">3</div>
+                        <div class="number n4">4</div>
+                        <div class="number n5">5</div>
+                        <div class="number n6">6</div>
+                        <div class="number n7">7</div>
+                        <div class="number n8">8</div>
+                        <div class="number n9">9</div>
+                        <div class="number n10">10</div>
+                        <div class="number n11">11</div>
+                        <div class="number n12">12</div>
+                        <div class="hand hour draggable" id="quiz-hour"></div>
+                        <div class="hand minute draggable" id="quiz-minute"></div>
+                        <div class="center-point"></div>
+                    </div>
+                </div>
+                <div id="quiz-options"></div>
+                <button id="quiz-submit">Submit Answer</button>
+                <div id="quiz-feedback" class="feedback"></div>
+            </div>
+            
+            <div id="quiz-results" style="display: none;">
+                <h3>Quiz Complete!</h3>
+                <p>Your score: <span id="quiz-score">0</span> out of <span id="quiz-total">5</span></p>
+                <div id="stars-container"></div>
+                <p id="final-message">Great effort!</p>
+                <button id="restart-quiz">Try Again</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023 Time Adventure | A fun way to learn how to tell time</p>
+    </footer>
+    
+    <!-- Audio elements -->
+    <audio id="correct-sound" src="audio/correct.mp3"></audio>
+    <audio id="wrong-sound" src="audio/wrong.mp3"></audio>
+    <audio id="complete-sound" src="audio/complete.mp3"></audio>
+</body>
+</html>
