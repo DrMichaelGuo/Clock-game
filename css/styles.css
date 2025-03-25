@@ -304,6 +304,12 @@ h3 {
     transform: scale(1.05);
 }
 
+.mc-option.selected {
+    background-color: #2e7d32; /* Dark green color */
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
 button#check-time, button#quiz-submit {
     background-color: var(--primary-color);
     color: white;
